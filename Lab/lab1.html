@@ -12,3 +12,33 @@
 <img src="https://maps.googleapis.com/maps/api/staticmap?center=UNCC,Charlotte,NC&zoom=14&scale=1&size=512x512&maptype=hybrid&sensor=false&key=AIzaSyB5U-lTv1hoJo_-ON8qVBXtEGXfZI80S7k" alt="Google Map">
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UNC Charlotte Map</title>
+    <style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h3>McEniry Building at UNC Charlotte</h3>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            const mceniry = { lat: 35.3072, lng: -80.7354 };
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: mceniry,
+            });
+            const marker = new google.maps.Marker({
+                position: mceniry,
+                map: map,
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
