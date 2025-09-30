@@ -1,60 +1,149 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Lab 2 for Web GIS</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-html { height:100% }
-body { height:100%; margin:0; padding:0 }
-#map_canvas { height:60vh; width:100% }
-</style>
-<script
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz6xn0dG6X7d9ylBjj0POloSczxRWRhC0">
-</script>
-<script>
-function initialize()
-{
-var latlng = new google.maps.LatLng(35.306840, -80.73200);
-var myOptions = {
-zoom: 16,
-center: latlng,
-mapTypeId: google.maps.MapTypeId.HYBRID
-};
-new google.maps.Map(document.getElementById("map_canvas"),
-myOptions);
-}
-</script>
+    <meta charset="utf-8">
+    <title>Lab 2 for Web GIS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        /* Consistent styling for all map containers */
+        .map-container {
+            width: 90%;
+            height: 450px;
+            margin: 20px auto; /* Center the maps */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            padding-left: 5%;
+        }
+    </style>
+    <!-- 
+      Google Maps API script. 
+      Remember to replace the key with your own if needed. 
+    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz6xn0dG6X7d9ylBjj0POloSczxRWRhC0"></script>
+    <script>
+        // --- Functions from the first file ---
+        function initialize() {
+            var latlng = new google.maps.LatLng(35.306840, -80.73200);
+            var myOptions = {
+                zoom: 16,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+            new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        }
+
+        // --- Functions from the second file ---
+
+        // Function for Map 1: Hometown
+        function initializeMap1() {
+            var latlng1 = new google.maps.LatLng(36.044659, -79.766235);
+            var myOptions1 = { zoom: 14, center: latlng1, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            new google.maps.Map(document.getElementById("map1"), myOptions1);
+        }
+
+        // Function for Map 2: Favorite Park (Satellite)
+        function initializeMap2() {
+            var latlng2 = new google.maps.LatLng(36.167657, -79.869376);
+            var myOptions2 = { zoom: 14, center: latlng2, mapTypeId: google.maps.MapTypeId.SATELLITE };
+            new google.maps.Map(document.getElementById("map2"), myOptions2);
+        }
+
+        // Function for Map 3: University (Hybrid)
+        function initializeMap3() {
+            var latlng3 = new google.maps.LatLng(35.306840, -80.73200);
+            var myOptions3 = { zoom: 14, center: latlng3, mapTypeId: google.maps.MapTypeId.HYBRID };
+            new google.maps.Map(document.getElementById("map3"), myOptions3);
+        }
+        
+        // Function for Map 4: Mountain Area (Terrain)
+        function initializeMap4() {
+            // Corrected longitude from 81.8601 to -81.8601 to show a location in NC mountains
+            var latlng4 = new google.maps.LatLng(36.1273, -81.8601);
+            var myOptions4 = { zoom: 14, center: latlng4, mapTypeId: google.maps.MapTypeId.TERRAIN };
+            new google.maps.Map(document.getElementById("map4"), myOptions4);
+        }
+        
+        // Function for Map 5: Another Interesting Place (Bermuda)
+        function initializeMap5() {
+            // Corrected longitude from 64.7903 to -64.7903 to show Bermuda
+            var latlng5 = new google.maps.LatLng(32.2995, -64.7903);
+            var myOptions5 = { zoom: 14, center: latlng5, mapTypeId: google.maps.MapTypeId.ROADMAP };
+            new google.maps.Map(document.getElementById("map5"), myOptions5);
+        }
+
+        // --- A single master function to initialize everything on the page ---
+        function initializePage() {
+            initialize();      // Calls the function for the first map
+            initializeMap1();  // Calls the functions for the other five maps
+            initializeMap2();
+            initializeMap3();
+            initializeMap4();
+            initializeMap5();
+        }
+    </script>
 </head>
-<body onload="initialize()">
-<h1>Lab 2 for Web GIS</h1>
-<h3>Name: Josiah Williams</h3>
-<!-- Comments-->
-<h3>Current Date is: </h3>
-<script type="text/javascript">
-document.write(Date());
-</script>
-<h3>Define variables and perform calculation: </h3>
-<script type="text/javascript">
-var str1="Hello World";
-document.write(str1);
-var x=5;
-document.write(x);
-document.write("<br> ");
-var y=10;
-var z=x+y;
-document.write(z);
-document.write("<br> ");
-</script>
-<h3>Define a function </h3>
-<script type="text/javascript">
-function sum3(x1,x2,x3)
-{
-var sum=x1+x2+x3;
-return sum;
-}
-var k=sum3(5,6,7);
-document.write(k);
-</script>
-<div id="map_canvas" style="width:50%; height:50%"></div>
+<!-- The onload event now calls the single master function -->
+<body onload="initializePage()">
+
+    <!-- Content from the first file -->
+    <h1>Lab 2 for Web GIS</h1>
+    <h3>Name: Josiah Williams</h3>
+    
+    <h3>Current Date is: </h3>
+    <script type="text/javascript">
+        document.write(Date());
+    </script>
+    
+    <h3>Define variables and perform calculation: </h3>
+    <script type="text/javascript">
+        var str1 = "Hello World";
+        document.write(str1 + "<br>");
+        var x = 5;
+        document.write("x = " + x + "<br>");
+        var y = 10;
+        var z = x + y;
+        document.write("x + y = " + z + "<br>");
+    </script>
+    
+    <h3>Define a function: </h3>
+    <script type="text/javascript">
+        function sum3(x1, x2, x3) {
+            var sum = x1 + x2 + x3;
+            return sum;
+        }
+        var k = sum3(5, 6, 7);
+        document.write("sum3(5, 6, 7) = " + k);
+    </script>
+
+    <!-- The first map -->
+    <h3>Initial UNC Charlotte Map</h3>
+    <div id="map_canvas" class="map-container"></div>
+
+    <!-- Content from the second file -->
+    <h1>My Five Interactive Maps</h1>
+
+    <h2>Map 1: Hometown</h2>
+    <div id="map1" class="map-container"></div>
+
+    <h2>Map 2: Favorite Park (Satellite)</h2>
+    <div id="map2" class="map-container"></div>
+
+    <h2>Map 3: University (Hybrid)</h2>
+    <div id="map3" class="map-container"></div>
+
+    <h2>Map 4: Mountain Area (Terrain)</h2>
+    <div id="map4" class="map-container"></div>
+    
+    <h2>Map 5: Another Interesting Place</h2>
+    <div id="map5" class="map-container"></div>
+
 </body>
 </html>
