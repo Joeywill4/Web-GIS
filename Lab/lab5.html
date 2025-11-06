@@ -2,129 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab 5: OpenLayers WMS Map</title>
+    <title>Lab 5 - Q4: CoPilot (OpenLayers)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
     <style>
-        body {
-            font-family: sans-serif;
-            padding: 0;
-            margin: 0;
-        }
-        /* Set the map to fill the screen */
-        #map {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-        /* Style the controls */
+        body { font-family: sans-serif; padding: 0; margin: 0; }
+        #map { width: 100vw; height: 100vh; position: relative; }
         #controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            z-index: 1000;
+            position: absolute; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.8);
+            padding: 10px; border-radius: 5px; z-index: 1000;
         }
-        #controls div {
-            margin-bottom: 5px;
-        }
+        #controls div { margin-bottom: 5px; }
     </style>
 </head>
 <body>
-
     <div id="map"></div>
-
     <div id="controls">
-        <div>
-            <strong>Basemap</strong>
-        </div>
-        <div>
-            <input type="radio" id="osm" name="basemap" value="osm" checked>
-            <label for="osm">OpenStreetMap</label>
-        </div>
-        <div>
-            <input type="radio" id="esri" name="basemap" value="esri">
-            <label for="esri">ESRI World Imagery</label>
-        </div>
+        <div><strong>Basemap</strong></div>
+        <div><input type="radio" id="osm" name="basemap" value="osm" checked><label for="osm"> OpenStreetMap</label></div>
+        <div><input type="radio" id="esri" name="basemap" value="esri"><label for="esri"> ESRI World Imagery</label></div>
         <hr>
-        <div>
-            <strong>Overlay</strong>
-        </div>
-        <div>
-            <input type="checkbox" id="wms-toggle" checked>
-            <label for="wms-toggle">US States WMS</label>
-        </div>
+        <div><strong>Overlay</strong></div>
+        <div><input type="checkbox" id="wms-toggle" checked><label for="wms-toggle"> US States WMS</label></div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
     <script>
-        // Define the basemap layers
-        const osmLayer = new ol.layer.Tile({
-            source: new ol.source.OSM(),
-            visible: true, // Visible by default
-        });
-
+        const osmLayer = new ol.layer.Tile({ source: new ol.source.OSM(), visible: true });
         const esriImageryLayer = new ol.layer.Tile({
             source: new ol.source.XYZ({
                 url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                attributions: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                attributions: 'Tiles &copy; Esri',
             }),
-            visible: false, // Hidden by default
+            visible: false,
         });
-
-        // Group the basemaps
-        const basemapGroup = new ol.layer.Group({
-            layers: [osmLayer, esriImageryLayer]
-        });
-
-        // Define the WMS overlay layer
+        const basemapGroup = new ol.layer.Group({ layers: [osmLayer, esriImageryLayer] });
         const wmsLayer = new ol.layer.Image({
             source: new ol.source.ImageWMS({
                 url: 'https://geoserver.cs.geog.port.ac.uk:8443/geoserver/wms',
                 params: {'LAYERS': 'topp:states'},
                 serverType: 'geoserver',
             }),
-            visible: true, // Visible by default
+            visible: true,
         });
-
-        // Create the map
         const map = new ol.Map({
             target: 'map',
-            layers: [
-                basemapGroup, // Basemaps go first (bottom)
-                wmsLayer      // Overlay goes on top
-            ],
+            layers: [basemapGroup, wmsLayer],
             view: new ol.View({
-                center: ol.proj.fromLonLat([-98.5795, 39.8283]), // Center of the US
+                center: ol.proj.fromLonLat([-98.5795, 39.8283]),
                 zoom: 4
             })
         });
-
-        // --- Event Listeners for Controls ---
-
-        // Basemap radio buttons
-        const basemapRadios = document.querySelectorAll('input[name="basemap"]');
-        basemapRadios.forEach(radio => {
+        document.querySelectorAll('input[name="basemap"]').forEach(radio => {
             radio.addEventListener('change', function() {
-                if (this.value === 'osm') {
-                    osmLayer.setVisible(true);
-                    esriImageryLayer.setVisible(false);
-                } else if (this.value === 'esri') {
-                    osmLayer.setVisible(false);
-                    esriImageryLayer.setVisible(true);
-                }
+                osmLayer.setVisible(this.value === 'osm');
+                esriImageryLayer.setVisible(this.value === 'esri');
             });
         });
-
-        // WMS checkbox
-        const wmsToggle = document.getElementById('wms-toggle');
-        wmsToggle.addEventListener('change', function() {
+        document.getElementById('wms-toggle').addEventListener('change', function() {
             wmsLayer.setVisible(this.checked);
         });
-
     </script>
 </body>
 </html>
