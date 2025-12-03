@@ -1,1 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lab 7: Santee Whole Web GIS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.3.0/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 600px;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/ol@v7.3.0/dist/ol.js"></script>
+  </head>
+  <body>
+    <h2>Santee Experimental Forest (Whole Data)</h2>
+    <div id="map" class="map"></div>
 
+    <script type="text/javascript">
+      // 1. DEFINE YOUR GEO SERVER URL
+      // REPLACE <YOUR_VM_IP> with your actual IP, e.g., '34.205.12.34'
+      var geoserverUrl = 'http://<YOUR_VM_IP>:8080/geoserver/wms';
+
+      // 2. DEFINE YOUR LAYERS
+      // Replace 'workspace:layername' with the actual names from your GeoServer
+      // Example: 'tchen19:sef_boundary', 'tchen19:sef_streams', etc.
+      var layer1_name = 'workspace:layer1_whole'; 
+      var layer2_name = 'workspace:layer2_whole';
+      var layer3_name = 'workspace:layer3_whole';
+
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          // Base Layer (OSM)
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          }),
+          // GIS Layer 1
+          new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: geoserverUrl,
+              params: {'LAYERS': layer1_name, 'TILED': true},
+              serverType: 'geoserver',
+            })
+          }),
+          // GIS Layer 2
+          new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: geoserverUrl,
+              params: {'LAYERS': layer2_name, 'TILED': true},
+              serverType: 'geoserver',
+            })
+          }),
+          // GIS Layer 3
+          new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: geoserverUrl,
+              params: {'LAYERS': layer3_name, 'TILED': true},
+              serverType: 'geoserver',
+            })
+          })
+        ],
+        view: new ol.View({
+          // Centered roughly on Santee Forest (Coordinates in Web Mercator)
+          center: ol.proj.fromLonLat([-79.8, 33.15]), 
+          zoom: 12
+        })
+      });
+    </script>
+  </body>
+</html>
